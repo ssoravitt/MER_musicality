@@ -11,6 +11,19 @@ QUADRANT_TO_IDX: dict[str, int] = {"Q1": 0, "Q2": 1, "Q3": 2, "Q4": 3}
 AUDIO_EXTS: tuple[str, ...] = (".mp3", ".wav", ".flac", ".ogg")
 
 
+def auto_discover_kaggle_4q(input_root: str | Path = "/kaggle/input") -> Path | None:
+    """Locate a mounted Kaggle 4Q dataset root containing `Q1..Q4` directories."""
+    base = Path(input_root)
+    if not base.exists():
+        return None
+    candidates = sorted(p for p in base.rglob("Q1") if p.is_dir())
+    for q1_dir in candidates:
+        parent = q1_dir.parent
+        if all((parent / q_name).is_dir() for q_name in ("Q2", "Q3", "Q4")):
+            return parent
+    return None
+
+
 def discover_coimbra4q(data_root: str | Path | None = None) -> list[MERRecord]:
     """Discover Coimbra 4Q tracks from either `Q1..Q4` folders or metadata CSVs."""
     root = resolve_data_dir("coimbra4q", data_root)

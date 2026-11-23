@@ -5,9 +5,10 @@
 ---
 
 ## 1. Current Status
-- **Stage:** `Phase 1 — Core Scaffolding, Docker Setup, Causal DSP & CogMucs Implemented & Tested`
+- **Stage:** `Phase 2A — Unattended Kaggle Stage 1 Benchmark Runner Ready`
 - **Last Updated:** 2026-11-23
-- **Workspace Root:** `MER_musicality/`
+- **Active Local Workspace:** `C:\Users\ssangnark\MER_musicality`
+- **GitHub Origin:** `https://github.com/ssoravitt/MER_musicality.git` (branch `main`)
 
 ## 2. Source Google Docs (MUSEC Continuity Anchors)
 | Document | Google Doc ID | URL |
@@ -33,26 +34,24 @@ Do not repeat these issues in Phase 1+:
    - **Tier 3 (23 ch):** Full 4-branch schema — Melody (6) + Rhythm (6) + Timbre (5) + Harmony (6). No blind openSMILE/MFCC summary dumps.
 2. **Unified Causal `50.0 Hz` Base Clock:** `sr = 22050 Hz`, `hop_length = 441` (`20.0 ms` exact; `25` frames = `0.500 s` exact for `2 Hz` labels), downsampled causally to `10.0 Hz` (or `2.0 Hz`).
 3. **Strict Causality (`center=False` + Left-Only Padding):** Never use `librosa` default `center=True` in causal extraction. Frame `t` depends strictly on audio `≤ t`.
-4. **Native Windows + Docker Compatibility:** `librosa + scipy + numpy` default backend works natively across Windows/macOS/Linux; `essentia` is an optional Linux/Docker adapter (`INSTALL_ESSENTIA=true`).
+4. **Native Windows + Docker + Kaggle Compatibility:** `librosa + scipy + numpy` default backend works across Windows/Linux/Docker/Kaggle; `essentia` is an optional Linux/Docker adapter (`INSTALL_ESSENTIA=true`).
 5. **CogMucs Multi-Branch Architecture:** Per-element temporal encoders (`Causal TCN` or `Feature-Gated GRU`) supporting `E/M/L` fusion, boolean padding masks (no dropping valid clips), and dual readout heads (Static 4Q/V-A + Dynamic `2 Hz` V-A).
-6. **Anti-Leakage & Warmup Masking:** Deterministic CSV splits in `data/splits/`; train-only scaler fitting; on DEAM, feed full `0–45 s` audio for causal warmup and mask loss/metrics strictly to `t ≥ 15.0 s`.
+6. **Anti-Leakage & Warmup Masking:** Deterministic CSV splits in `data/splits/`; inner-train/val split inside each outer CV fold for early stopping; scaler fit strictly on inner-train; on DEAM, feed full `0–45 s` audio for causal warmup and mask loss/metrics strictly to `t ≥ 15.0 s`.
 7. **Two-Experiment Scientific Verification:** Experiment 1 (predictive parsimony vs. SOTA across datasets) + Experiment 2 (`evaluation/perturbation.py` causal audio/contour interventions verifying human-aligned emotion shifts).
 
 ## 5. Confirmed User Decisions
 | # | Decision | Confirmed Choice | Notes |
 |---|---|---|---|
-| 1 | **Datasets (Phase 1+)** | **Coimbra 4Q** (Stage 1) + **DEAM** (Stage 2) | Local copy lost from former PC; verified download sources documented in `README.md` (University of Coimbra `http://mir.dei.uc.pt/downloads.html` + Kaggle `sparshg/4q-audio-emotion-dataset-russell`; CVML Geneva `http://cvml.unige.ch/databases/DEAM/` + Kaggle `imuhammad/deam-dataset-emotional-analysis-in-music`). Both loaders wired in Phase 1. |
-| 2 | **Compute & Docker / Unattended Runs** | **Docker (`python:3.11-slim`) + Unattended Cloud/NAS Runners** | Local Docker Desktop stops when PC powers down (and cannot bind-mount Windows UNC paths `\\kfs\...` directly; clone to local disk first). Best unattended options: (a) **Kaggle Free GPU "Save & Run All" Background Commit**, (b) cheap cloud Docker GPU (RunPod/Vast.ai) or always-on home NAS, (c) GitHub Actions CPU runs. Optional `essentia` Linux build arg supported in `Dockerfile`. |
-| 3 | **Feature & Model Scope** | **Full Tier 1 → Tier 2 → Tier 3 Ladder + `CogMucs` (`TCN` & `GRU`)** | User approved full plan. Modular config selects Tier 1/2/3 and `tcn`/`gru` cleanly for Day-1 ablations. |
+| 1 | **Datasets (Phase 1+)** | **Coimbra 4Q** (Stage 1) + **DEAM** (Stage 2) | Auto-discovered on Kaggle (`/kaggle/input/...`) or `$MER_DATA_DIR`. Kaggle slugs: `sparshg/4q-audio-emotion-dataset-russell` & `imuhammad/deam-dataset-emotional-analysis-in-music`. |
+| 2 | **Compute & Unattended Runner** | **Path A: Free Kaggle GPU Background Commit** (+ Docker backup) | Ready-to-run `notebooks/kaggle_stage1_coimbra4q.ipynb` + `scripts/benchmark_coimbra4q.py` (Tier 1→2→3 + LOBO ablations + plots + checkpoint). |
+| 3 | **Feature & Model Scope** | **Full Tier 1 → Tier 2 → Tier 3 Ladder + `CogMucs` (`TCN` & `GRU`)** | Tier 3 extracted once and sliced deterministically for Tiers 1 & 2 (`slice_tier_from_full`). |
 
-## 6. Next Steps (Phase 2 — First Real Dataset Runs)
-1. Push repository to GitHub (from a local clone or once Git safe directory is configured).
-2. Download **Coimbra 4Q** and/or **DEAM** into `data/raw/` (or run directly on **Kaggle** where both datasets are pre-hosted).
-3. Run feature extraction CLI: `python -m scripts.extract --dataset coimbra4q --tier 3` (and `deam`).
-4. Run Stage 1 **Coimbra 4Q** ablation table (`Tier 1 -> Tier 2 -> Tier 3` with `CogMucs-TCN` & `CogMucs-GRU` vs. June 2024 `36.07% F1` and Panda `67.5%-76.4% F1`).
-5. Run Stage 2 **DEAM** dynamic `2 Hz` V-A training + Experiment 2 causal perturbations (`evaluation/perturbation.py`).
+## 6. Next Steps (Phase 2B — After Kaggle Stage 1 Completes)
+1. Review Kaggle Stage 1 `summary_report.md`, `tier_ablation_plot.png`, `branch_weights_by_quadrant.png`, and `confusion_matrices.png`.
+2. Record real 10-fold Coimbra 4Q numbers (`Summary` vs. `CogMucs-TCN` vs. `CogMucs-GRU` across Tiers 1–3) here and compare against June 2024 (`36.07% F1`) and Panda et al. (`67.5%–76.4% F1`).
+3. Create Kaggle Stage 2 notebook for **DEAM** (`2 Hz` continuous dynamic V-A, masked `t >= 15.0 s`) + **Experiment 2** causal perturbations (`evaluation/perturbation.py`).
 
 ## 7. Cross-Machine Sync Notes (GitHub Workflow)
-- **Never commit large binaries:** `data/raw/`, `data/processed/`, `checkpoints/`, `.venv/`, and local logs are in `.gitignore`.
-- **Track reproducible specs:** Commit `configs/**/*.yaml`, `data/splits/*.csv`, `ARCHITECTURE.md`, `Dockerfile`, and `.agent/HANDOVER.md`.
-- **Path portability:** Override dataset root via `MER_DATA_DIR` environment variable across Windows, Docker (`/workspace/data/raw`), and Kaggle (`/kaggle/input/...`).
+- **Never commit large binaries:** `data/raw/`, `data/processed/`, `checkpoints/`, `outputs/`, `.venv/`, and local logs are in `.gitignore`.
+- **Track reproducible specs:** Commit `configs/**/*.yaml`, `data/splits/*.csv`, `notebooks/*.ipynb`, `ARCHITECTURE.md`, `Dockerfile`, and `.agent/HANDOVER.md`.
+- **Path portability:** Override dataset root via `MER_DATA_DIR` environment variable or pass `--data-dir` directly.

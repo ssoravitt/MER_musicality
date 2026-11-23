@@ -2,7 +2,13 @@
 
 from features.pipeline import FeatureOutput, extract_features, extract_file
 from features.schema import BRANCH_NAMES, FEATURE_SCHEMA, FeatureSpec
-from features.tiers import get_branch_indices, get_tier_names, get_tier_specs
+from features.tiers import (
+    get_branch_indices,
+    get_tier_indices_in_full,
+    get_tier_names,
+    get_tier_specs,
+    slice_tier_from_full,
+)
 
 __all__ = [
     "BRANCH_NAMES",
@@ -12,6 +18,8 @@ __all__ = [
     "extract_features",
     "extract_file",
     "get_branch_indices",
+    "get_tier_indices_in_full",
     "get_tier_names",
     "get_tier_specs",
+    "slice_tier_from_full",
 ]
