@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mer-musicality"
+version = "0.1.0"
+description = "Cognition-First, Time-Series Music Emotion Recognition (CogMucs)"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "librosa>=0.10",
+    "soundfile>=0.12",
+    "torch>=2.2",
+    "scikit-learn>=1.4",
+    "pyyaml>=6.0",
+    "pandas>=2.1",
+    "tqdm>=4.66",
+    "matplotlib>=3.8",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.4",
+]
+essentia = [
+    "essentia>=2.1b6.dev1110",
+]
+
+[tool.setuptools.packages.find]
+include = ["features*", "models*", "data*", "evaluation*", "scripts*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

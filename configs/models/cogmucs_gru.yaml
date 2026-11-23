@@ -1,0 +1,8 @@
+model: cogmucs
+branch_type: gru
+fusion: mid
+hidden_dim: 48
+num_layers: 2
+bidirectional: false
+dropout: 0.2
+dynamic_stride: 5

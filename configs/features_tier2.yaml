@@ -1,0 +1,9 @@
+tier: 2
+name: auditory_relative_contours
+sr: 22050
+hop_length: 441
+base_hz: 50.0
+target_hz: 10.0
+backend: librosa
+causal: true
+description: "Tier 2 (6 ch): Auditory pitch, brightness, and loudness contours (McDermott et al., 2008; Honing, 2023)"

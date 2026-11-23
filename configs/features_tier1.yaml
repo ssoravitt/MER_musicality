@@ -1,0 +1,9 @@
+tier: 1
+name: musec_minimal_3contour
+sr: 22050
+hop_length: 441
+base_hz: 50.0
+target_hz: 10.0
+backend: librosa
+causal: true
+description: "Tier 1 (4 ch): Pure MUSEC 3-contour redemption (pitch_f0_midi, pitch_voicing_prob, onset_strength_flux, spectral_centroid_bark)"

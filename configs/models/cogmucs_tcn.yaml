@@ -1,0 +1,8 @@
+model: cogmucs
+branch_type: tcn
+fusion: mid
+hidden_dim: 32
+dilations: [1, 2, 4, 8, 16]
+kernel_size: 3
+dropout: 0.2
+dynamic_stride: 5

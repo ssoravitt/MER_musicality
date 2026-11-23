@@ -1,0 +1,38 @@
+services:
+  mer:
+    build:
+      context: .
+      args:
+        INSTALL_ESSENTIA: "false"
+    image: mer-musicality:latest
+    container_name: mer-musicality-cpu
+    volumes:
+      - .:/workspace
+    environment:
+      - MER_DATA_DIR=/workspace/data/raw
+      - PYTHONPATH=/workspace
+    stdin_open: true
+    tty: true
+
+  mer-gpu:
+    build:
+      context: .
+      args:
+        INSTALL_ESSENTIA: "false"
+    image: mer-musicality:latest
+    container_name: mer-musicality-gpu
+    profiles: ["gpu"]
+    volumes:
+      - .:/workspace
+    environment:
+      - MER_DATA_DIR=/workspace/data/raw
+      - PYTHONPATH=/workspace
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    stdin_open: true
+    tty: true

@@ -1,0 +1,13 @@
+dataset: coimbra4q
+task: static_4q
+num_classes: 4
+class_names: ["Q1", "Q2", "Q3", "Q4"]
+n_folds: 10
+seed: 42
+raw_subdir: coimbra4q
+processed_subdir: coimbra4q
+splits_file: data/splits/coimbra4q_splits.csv
+batch_size: 32
+epochs: 100
+lr: 0.001
+weight_decay: 0.0001

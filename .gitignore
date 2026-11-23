@@ -1,0 +1,42 @@
+# Python caches & packaging
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+.pytest_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Large audio datasets, extracted feature caches & checkpoints
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+checkpoints/
+runs/
+outputs/
+*.mp3
+*.wav
+*.flac
+*.ogg
+*.m4a
+*.npy
+*.npz
+*.pkl
+*.pt
+*.pth
+*.h5
+*.hdf5
+
+# IDE & OS clutter
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

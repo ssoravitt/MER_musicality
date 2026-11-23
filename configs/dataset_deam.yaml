@@ -1,0 +1,16 @@
+dataset: deam
+task: dynamic_va
+label_hz: 2.0
+warmup_sec: 15.0
+clip_duration_sec: 45.0
+seed: 42
+val_ratio: 0.15
+test_ratio: 0.15
+raw_subdir: deam
+processed_subdir: deam
+splits_file: data/splits/deam_splits.csv
+batch_size: 32
+epochs: 80
+lr: 0.001
+weight_decay: 0.0001
+mse_weight: 0.25

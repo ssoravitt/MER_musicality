@@ -1,0 +1,9 @@
+tier: 3
+name: cognitive_musicality_full
+sr: 22050
+hop_length: 441
+base_hz: 50.0
+target_hz: 10.0
+backend: librosa
+causal: true
+description: "Tier 3 (23 ch): Full 4-branch cognitive musicality schema (Melody 6, Rhythm 6, Timbre 5, Harmony 6)"
