@@ -7,7 +7,7 @@ name = "mer-musicality"
 version = "0.1.0"
 description = "Cognition-First, Time-Series Music Emotion Recognition (CogMucs)"
 readme = "README.md"
-requires-python = ">=3.10,<3.13"
+requires-python = ">=3.10,<3.14"
 dependencies = [
     "numpy>=1.26",
     "scipy>=1.11",
@@ -34,6 +34,7 @@ essentia = [
 include = ["features*", "models*", "data*", "evaluation*", "scripts*"]
 
 [tool.pytest.ini_options]
+pythonpath = ["."]
 testpaths = ["tests"]
 addopts = "-v"
 
